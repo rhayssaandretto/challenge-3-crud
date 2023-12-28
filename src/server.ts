@@ -1,9 +1,9 @@
-import express from "express";
+import express from 'express';
 
 const server = express();
 
 server.get('/', (_, response) => {
-    return response.send('Connected sucessfully!');
+  response.send('Connected sucessfully!');
 });
 
-export { server };
+export default server;
