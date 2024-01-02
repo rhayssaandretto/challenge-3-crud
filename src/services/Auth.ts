@@ -1,3 +1,4 @@
+import UnauthorizedError from '../errors/UnauthorizedError';
 import * as jwt from 'jsonwebtoken';
 
 interface IJwtData {
@@ -9,14 +10,14 @@ class Auth {
 
   public static generateToken(data: IJwtData): string {
     if (Auth.SECRET === undefined) {
-      throw new Error('JWT_SECRET is not defined.');
+      throw new UnauthorizedError('JWT_SECRET is not defined.');
     }
     return jwt.sign(data, Auth.SECRET, { expiresIn: '3h' });
   }
 
   public static verifyToken(token: string): IJwtData | 'INVALID_TOKEN' {
     if (Auth.SECRET === undefined) {
-      throw new Error('JWT_SECRET is not defined.'); //500
+      throw new UnauthorizedError('JWT_SECRET is not defined.');
     }
     const decoded = jwt.verify(token, Auth.SECRET);
     if (typeof decoded === 'string') {
