@@ -1,3 +1,3 @@
 export interface IRepository<T> {
-  findAll(): Promise<T[]>;
+  findByEmail(email: string): Promise<T | null>;
 }
