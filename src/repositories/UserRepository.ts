@@ -1,5 +1,5 @@
-import { IUser } from 'models/interfaces/user-interface';
-import { user } from 'models/User';
+import { IUser } from '../models/interfaces/user-interface';
+import { user } from '../models/User';
 import { Model } from 'mongoose';
 import { IRepository } from './IRepository';
 
@@ -15,7 +15,7 @@ export default class UserRepository implements IRepository<IUser> {
     return await newUser.save();
   }
 
-  async findAll(): Promise<IUser[]> {
-    return this.UserModel.find().exec();
+  async findByEmail(email: string): Promise<IUser | null> {
+    return this.UserModel.findOne({ email: email }).exec();
   }
 }
