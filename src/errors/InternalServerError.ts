@@ -1,10 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
+import CustomAPIError from './CustomAPIError';
 
-export default class InternalServerError extends Error {
-  statusCode: StatusCodes;
+export default class InternalServerError extends CustomAPIError {
   constructor(message: string) {
-    super(message);
-    this.name = 'Internal Server Error';
-    this.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+    super(message, StatusCodes.INTERNAL_SERVER_ERROR, 'Internal Server Error');
   }
 }
