@@ -1,5 +1,3 @@
-import { Date } from 'mongoose';
-
 export interface IUser extends Document {
   _id: string;
   firstName: string;

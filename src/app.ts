@@ -2,6 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { connectToMongoDB } from './database/db';
 import server from './server';
+import Auth from './services/Auth';
+import userRoutes from './routes/index';
 // import swaggerUi from 'swagger-ui-express';
 // import swagger from '../swagger.json';
 
@@ -11,6 +13,15 @@ const app = server;
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use('/', userRoutes);
+
+app.get('/auth', (_, response) => {
+  response.send(
+    Auth.verifyToken(
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFidWJsZSIsImlhdCI6MTcwMzkxNTgyOSwiZXhwIjoxNzAzOTI2NjI5fQ.0czkc3QXKpFQTw9YykaT2fsTyoSJfILQMvs753w0YVY',
+    ),
+  );
+});
 
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swagger));
 
