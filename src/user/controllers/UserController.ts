@@ -1,8 +1,8 @@
 import { Request, Response, RequestHandler } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import UserService from '../services/UserService';
-import ErrorHandler from '../errors/ErrorHandler';
-import Auth from '../services/Auth';
+import ErrorHandler from '../../utils/errors/ErrorHandler';
+import Auth from '../../utils/Auth';
 import { CreateUserDTO } from '../DTO/createUserDTO';
 import { SignInDTO } from '../DTO/signInDTO';
 

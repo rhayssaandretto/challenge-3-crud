@@ -1,9 +1,9 @@
-import NotFoundError from '../../errors/NotFoundError';
+import NotFoundError from '../../utils/errors/NotFoundError';
 import { GetEventsDTO } from '../DTO/GetEventsDTO';
 import { CreateEventDTO } from '../DTO/CreateEventDTO';
 import EventRepository from '../repositories/EventRepository';
 import { IEvent } from '../../models/interfaces/event-interface';
-import UserRepository from '../../repositories/UserRepository';
+import UserRepository from '../../user/repositories/UserRepository';
 import { IUser } from 'models/interfaces/user-interface';
 
 export default class EventService {
@@ -39,6 +39,7 @@ export default class EventService {
         description || '',
       );
     }
+
     return this._eventRepository.findAll();
   }
 

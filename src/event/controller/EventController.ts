@@ -1,4 +1,4 @@
-import ErrorHandler from '../../errors/ErrorHandler';
+import ErrorHandler from '../../utils/errors/ErrorHandler';
 import { CreateEventDTO } from '../DTO/CreateEventDTO';
 import { StatusCodes } from 'http-status-codes';
 import { Request, RequestHandler, Response } from 'express';

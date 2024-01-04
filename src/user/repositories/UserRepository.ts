@@ -1,5 +1,5 @@
-import { IUser } from '../models/interfaces/user-interface';
-import { user } from '../models/User';
+import { IUser } from '../../models/interfaces/user-interface';
+import { user } from '../../models/User';
 import { Model } from 'mongoose';
 import { IRepository } from './IUserRepository';
 

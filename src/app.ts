@@ -2,8 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { connectToMongoDB } from './database/db';
 import server from './server';
-import Auth from './services/Auth';
-import userRoutes from './routes/index';
+import Auth from './utils/Auth';
+import { userRoutes, eventRoutes } from './routes/index';
 // import swaggerUi from 'swagger-ui-express';
 // import swagger from '../swagger.json';
 
@@ -14,6 +14,8 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use('/', userRoutes);
+app.use('/', eventRoutes);
+//app.use('/', EventRoutes);
 
 app.get('/auth', (_, response) => {
   response.send(
