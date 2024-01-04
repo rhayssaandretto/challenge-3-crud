@@ -1,7 +1,7 @@
 import { IUser } from '../models/interfaces/user-interface';
 import { user } from '../models/User';
 import { Model } from 'mongoose';
-import { IRepository } from './IRepository';
+import { IRepository } from './IUserRepository';
 
 export default class UserRepository implements IRepository<IUser> {
   private readonly UserModel: Model<IUser>;

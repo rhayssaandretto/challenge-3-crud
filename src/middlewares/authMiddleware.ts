@@ -1,4 +1,4 @@
-import Auth from 'services/Auth';
+import Auth from '../services/Auth';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
