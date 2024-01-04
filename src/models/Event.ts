@@ -28,7 +28,7 @@ const eventSchema: Schema = new Schema<IEvent>(
       ],
     },
     userId: {
-      type: Schema.Types.ObjectId,
+      type: String,
       ref: 'User',
       required: true,
     },
