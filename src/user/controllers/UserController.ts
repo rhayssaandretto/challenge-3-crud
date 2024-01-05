@@ -3,8 +3,12 @@ import { StatusCodes } from 'http-status-codes';
 import UserService from '../services/UserService';
 import ErrorHandler from '../../utils/errors/ErrorHandler';
 import Auth from '../../utils/Auth';
-import { CreateUserDTO } from '../DTO/createUserDTO';
-import { SignInDTO } from '../DTO/signInDTO';
+import {
+  CreateUserDTO,
+  CreateUserSchema,
+  SignInDTO,
+  SignInSchema,
+} from '../DTO';
 
 export default class UserController {
   private _userService: UserService;
@@ -20,7 +24,9 @@ export default class UserController {
     const createUserDTO: CreateUserDTO = request.body;
 
     try {
-      await this._userService.create(createUserDTO);
+      const validatedData = CreateUserSchema.parse(createUserDTO);
+
+      await this._userService.create(validatedData);
 
       response
         .status(StatusCodes.CREATED)
@@ -37,13 +43,14 @@ export default class UserController {
     const signInDTO: SignInDTO = request.body;
 
     try {
-      const user = await this._userService.signIn(signInDTO);
-      const token = Auth.generateToken({ email: signInDTO.email });
+      const validatedData = SignInSchema.parse(signInDTO);
+
+      const user = await this._userService.signIn(validatedData);
+      const token = Auth.generateToken({ email: validatedData.email });
 
       response
         .status(StatusCodes.OK)
         .json({ message: 'User logged in successfully!', user, token });
-      //.set('Authorization', `Bearer ${token}`);
     } catch (error: unknown) {
       ErrorHandler.handler(error, response);
     }

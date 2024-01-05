@@ -12,12 +12,14 @@ export interface CreateUserDTO {
 }
 
 export const CreateUserSchema = z.object({
-  firstName: z.string().regex(/^[a-zA-Z]+$/),
-  lastName: z.string().regex(/^[a-zA-Z]+$/),
+  firstName: z
+    .string()
+    .min(5, { message: 'Must be 5 or more characters long' }),
+  lastName: z.string().min(5, { message: 'Must be 5 or more characters long' }),
   birthDate: z.date(),
-  city: z.string().regex(/^[a-zA-Z]+$/),
-  country: z.string().regex(/^[a-zA-Z]+$/),
-  email: z.string().email(),
-  password: z.string().min(6),
+  city: z.string(),
+  country: z.string(),
+  email: z.string().email({ message: 'Invalid email address' }),
+  password: z.string().min(6, { message: 'Must be 6 or more characters long' }),
   confirmPassword: z.string(),
 });

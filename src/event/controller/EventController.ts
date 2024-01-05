@@ -1,9 +1,13 @@
 import ErrorHandler from '../../utils/errors/ErrorHandler';
-import { CreateEventDTO } from '../DTO/CreateEventDTO';
+import {
+  CreateEventDTO,
+  CreateEventSchema,
+  GetEventsDTO,
+  GetEventsSchema,
+} from '../DTO';
 import { StatusCodes } from 'http-status-codes';
 import { Request, RequestHandler, Response } from 'express';
 import EventService from '../services/EventService';
-import { GetEventsDTO } from 'event/DTO/GetEventsDTO';
 
 export default class EventController {
   private _eventService: EventService;
@@ -20,7 +24,9 @@ export default class EventController {
     const email: string = request.headers.email as string;
 
     try {
-      await this._eventService.create(createEventDTO, email);
+      const validateData = CreateEventSchema.parse(createEventDTO);
+
+      await this._eventService.create(validateData, email);
 
       response
         .status(StatusCodes.CREATED)
@@ -37,10 +43,12 @@ export default class EventController {
     const { dayOfWeek, description }: GetEventsDTO = request.query;
 
     try {
-      const search = await this._eventService.getAll({
+      const validatedData = GetEventsSchema.parse({
         dayOfWeek: dayOfWeek as string,
         description: description as string,
       });
+
+      const search = await this._eventService.getAll(validatedData);
 
       response.status(StatusCodes.OK).json(search);
     } catch (error) {
@@ -89,8 +97,12 @@ export default class EventController {
     const { dayOfWeek } = request.query;
 
     try {
+      const validatedData = GetEventsSchema.parse({
+        dayOfWeek: dayOfWeek as string,
+      });
+
       const search = await this._eventService.deleteByWeekday(
-        dayOfWeek as string,
+        validatedData.dayOfWeek || '',
       );
 
       response.status(StatusCodes.OK).json({ deletedEvents: search });

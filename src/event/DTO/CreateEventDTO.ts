@@ -8,7 +8,7 @@ export interface CreateEventDTO {
 export const CreateEventSchema = z.object({
   description: z
     .string()
-    .min(5, { message: 'Must be 5 or more characters long' }),
+    .min(5, { message: 'Description must be 5 or more characters long' }),
   dayOfWeek: z.enum([
     'Sunday',
     'Monday',
