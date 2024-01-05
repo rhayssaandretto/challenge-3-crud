@@ -11,6 +11,7 @@ export default class ErrorHandler {
         error: error.error,
         message: error.message,
       });
+      return;
     }
 
     if (error instanceof z.ZodError) {
@@ -23,6 +24,7 @@ export default class ErrorHandler {
         type: 'Validation Error',
         errors: validationErrors,
       });
+      return;
     }
 
     response.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
