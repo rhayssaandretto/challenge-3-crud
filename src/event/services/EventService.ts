@@ -33,10 +33,11 @@ export default class EventService {
 
   async getAll(event: GetEventsDTO): Promise<IEvent[] | null> {
     const { dayOfWeek, description } = event;
+
     if (dayOfWeek || description) {
       return this._eventRepository.findByWeekdayOrDescription(
-        dayOfWeek || '',
-        description || '',
+        dayOfWeek!,
+        description!,
       );
     }
 
@@ -44,7 +45,7 @@ export default class EventService {
   }
 
   async getById(id: string): Promise<IEvent | null> {
-    const search = this._eventRepository.findById(id);
+    const search = await this._eventRepository.findById(id);
 
     if (!search) {
       throw new NotFoundError(`Event with ID ${id} not found.`);
@@ -53,19 +54,24 @@ export default class EventService {
     return search;
   }
 
-  async deleteById(id: string): Promise<void> {
-    const search = this._eventRepository.deleteById(id);
+  async deleteById(id: string): Promise<void | string> {
+    const search = await this._eventRepository.deleteById(id);
 
     if (!search) {
       throw new NotFoundError(`Event with ID ${id} not found.`);
     }
   }
 
-  async deleteByWeekday(dayOfWeek: string): Promise<void> {
-    const search = this._eventRepository.deleteByWeekday(dayOfWeek);
+  async deleteByWeekday(dayOfWeek: string): Promise<IEvent[]> {
+    const search: IEvent[] =
+      await this._eventRepository.findByWeekdayOrDescription(dayOfWeek, '');
 
-    if (!search) {
+    if (search.length === 0) {
       throw new NotFoundError('Event not found.');
     }
+
+    await this._eventRepository.deleteByWeekday(dayOfWeek);
+
+    return search;
   }
 }

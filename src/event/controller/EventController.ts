@@ -3,7 +3,6 @@ import { CreateEventDTO } from '../DTO/CreateEventDTO';
 import { StatusCodes } from 'http-status-codes';
 import { Request, RequestHandler, Response } from 'express';
 import EventService from '../services/EventService';
-import { IEvent } from 'models/interfaces/event-interface';
 import { GetEventsDTO } from 'event/DTO/GetEventsDTO';
 
 export default class EventController {
@@ -16,9 +15,9 @@ export default class EventController {
   create: RequestHandler = async (
     request: Request,
     response: Response,
-  ): Promise<any> => {
+  ): Promise<void> => {
     const createEventDTO: CreateEventDTO = request.body;
-    const email: string = request.headers.email;
+    const email: string = request.headers.email as string;
 
     try {
       await this._eventService.create(createEventDTO, email);
@@ -34,12 +33,16 @@ export default class EventController {
   getAll: RequestHandler = async (
     request: Request,
     response: Response,
-  ): Promise<GetEventsDTO[] | null> => {
-    const { dayOfWeek, description } = request.query;
-    try {
-      this._eventService.getAll();
+  ): Promise<void> => {
+    const { dayOfWeek, description }: GetEventsDTO = request.query;
 
-      response.status(StatusCodes.OK).json({});
+    try {
+      const search = await this._eventService.getAll({
+        dayOfWeek: dayOfWeek as string,
+        description: description as string,
+      });
+
+      response.status(StatusCodes.OK).json(search);
     } catch (error) {
       ErrorHandler.handler(error, response);
     }
@@ -48,7 +51,7 @@ export default class EventController {
   getById: RequestHandler = async (
     request: Request,
     response: Response,
-  ): Promise<any> => {
+  ): Promise<void> => {
     const id = request.params.id;
 
     try {
@@ -86,11 +89,11 @@ export default class EventController {
     const { dayOfWeek } = request.query;
 
     try {
-      await this._eventService.deleteByWeekday(dayOfWeek as string);
+      const search = await this._eventService.deleteByWeekday(
+        dayOfWeek as string,
+      );
 
-      response
-        .status(StatusCodes.NO_CONTENT)
-        .json({ message: 'Event deleted!' });
+      response.status(StatusCodes.OK).json({ deletedEvents: search });
     } catch (error) {
       ErrorHandler.handler(error, response);
     }
