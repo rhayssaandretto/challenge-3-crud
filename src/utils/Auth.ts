@@ -1,7 +1,7 @@
 import UnauthorizedError from './errors/UnauthorizedError';
 import * as jwt from 'jsonwebtoken';
 
-interface IJwtData {
+export interface IJwtData {
   email: string;
 }
 
