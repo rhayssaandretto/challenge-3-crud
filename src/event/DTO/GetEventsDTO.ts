@@ -1,6 +1,6 @@
 export interface GetEventsDTO {
-  _id: string;
+  _id?: string;
   dayOfWeek?: string;
   description?: string;
-  userId: string;
+  userId?: string;
 }

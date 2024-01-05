@@ -12,7 +12,6 @@ export default class EventRepository implements IEventRepository<IEvent> {
 
   async create(event: IEvent) {
     const newEvent = new this._eventModel(event);
-    console.log('save?');
 
     return await newEvent.save();
   }
@@ -28,17 +27,17 @@ export default class EventRepository implements IEventRepository<IEvent> {
   async findByWeekdayOrDescription(
     dayOfWeek: string,
     description: string,
-  ): Promise<IEvent[] | null> {
+  ): Promise<IEvent[]> {
     return this._eventModel.find({
       $or: [{ dayOfWeek: dayOfWeek }, { description: description }],
     });
   }
 
-  async deleteByWeekday(dayOfWeek: string): Promise<void> {
-    this._eventModel.deleteMany({ dayOfWeek: dayOfWeek });
+  async deleteByWeekday(dayOfWeek: string): Promise<any> {
+    return this._eventModel.deleteMany({ dayOfWeek: dayOfWeek });
   }
 
-  async deleteById(id: string): Promise<void> {
+  async deleteById(id: string): Promise<void | string> {
     this._eventModel.findByIdAndDelete(id);
   }
 }
