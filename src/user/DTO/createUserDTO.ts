@@ -1,3 +1,4 @@
+import { isValid, parseISO } from 'date-fns';
 import { z } from 'zod';
 
 export interface CreateUserDTO {
@@ -11,25 +12,24 @@ export interface CreateUserDTO {
   confirmPassword: string;
 }
 
-const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-
-const parseAndValidateDate = (value: unknown) => {
-  if (typeof value === 'string' && dateRegex.test(value)) {
-    return new Date(value);
-  }
-  throw new Error('Invalid date format');
-};
-
-const DateStringType = z.string().refine(parseAndValidateDate, {
-  message: 'Invalid date format',
-});
-
 export const CreateUserSchema = z.object({
   firstName: z
     .string()
     .min(5, { message: 'Must be 5 or more characters long' }),
   lastName: z.string().min(5, { message: 'Must be 5 or more characters long' }),
-  birthDate: DateStringType,
+  birthDate: z
+    .string()
+    .refine(
+      (value) => {
+        const parsedDate = parseISO(value);
+
+        return isValid(parsedDate);
+      },
+      {
+        message: 'Invalid date format (YYYY-MM-DD)',
+      },
+    )
+    .transform((value) => parseISO(value)),
   city: z.string(),
   country: z.string(),
   email: z.string().email({ message: 'Invalid email address' }),
