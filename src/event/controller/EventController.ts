@@ -82,9 +82,7 @@ export default class EventController {
     try {
       await this._eventService.deleteById(id);
 
-      response
-        .status(StatusCodes.NO_CONTENT)
-        .json({ message: 'Event deleted!' });
+      response.status(StatusCodes.NO_CONTENT);
     } catch (error) {
       ErrorHandler.handler(error, response);
     }

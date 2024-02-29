@@ -37,7 +37,8 @@ export default class EventRepository implements IEventRepository<IEvent> {
     return this._eventModel.deleteMany({ dayOfWeek: dayOfWeek });
   }
 
-  async deleteById(id: string): Promise<void | string> {
-    this._eventModel.findByIdAndDelete(id);
+  async deleteById(id: string): Promise<string | void> {
+    const result: any = await this._eventModel.findByIdAndDelete(id);
+    return result;
   }
 }
